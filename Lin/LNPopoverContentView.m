@@ -272,6 +272,7 @@ NSString * const LNPopoverContentViewDidAddCustomPatternNotification = @"LNPopov
             LNRegularExpressionPattern *newPatter = [[LNRegularExpressionPattern alloc] initWithString:patternView.searchPattern numberOfRanges:patternView.range entityRangeIndex:0 keyRangeIndex:1];
             [arr addObject:newPatter];
             [[LNUserDefaultsManager sharedManager] setUserDefinedSearchPatterns:[arr copy]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:LNPopoverContentViewDidAddCustomPatternNotification object:self userInfo:nil];
         }
             
         default:
