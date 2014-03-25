@@ -13,7 +13,8 @@ typedef NS_ENUM(NSUInteger, LNEntityType) {
     LNEntityTypeLocalizedStringForKey,
     LNEntityTypeLocalizedStringFromTable,
     LNEntityTypeLocalizedStringFromTableInBundle,
-    LNEntityTypeLocalizedStringWithDefaultValue
+    LNEntityTypeLocalizedStringWithDefaultValue,
+    LNEntityTypeLocalizedStringUserDefined
 };
 
 NS_INLINE NSString * NSStringFromEntityType(LNEntityType type) {
@@ -34,6 +35,9 @@ NS_INLINE NSString * NSStringFromEntityType(LNEntityType type) {
             break;
         case LNEntityTypeLocalizedStringWithDefaultValue:
             string = @"LNEntityTypeLocalizedStringWithDefaultValue";
+            break;
+        case LNEntityTypeLocalizedStringUserDefined:
+            string = @"LNEntityTypeLocalizedStringUserDefined";
             break;
     }
     

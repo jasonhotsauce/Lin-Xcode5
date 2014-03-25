@@ -10,14 +10,12 @@
 
 // Models
 #import "LNLocalizationCollection.h"
-
 @interface LNAlertAccessoryView ()
 
 @property (weak) IBOutlet NSPopUpButton *tableButton;
 @property (weak) IBOutlet NSPopUpButton *languageButton;
 @property (weak) IBOutlet NSTextField *keyTextField;
 @property (weak) IBOutlet NSTextField *valueTextField;
-
 @end
 
 @implementation LNAlertAccessoryView
@@ -52,7 +50,7 @@
     NSString *selectedLanguageDesignations = [self.languageButton titleOfSelectedItem];
     
     for (LNLocalizationCollection *collection in self.collections) {
-        if ([collection.fileName isEqualToString:selectedFileName]
+        if ([[self tableTitleForCollection:collection] isEqualToString:selectedFileName]
             && [collection.languageDesignation isEqualToString:selectedLanguageDesignations]) {
             return collection;
         }
@@ -80,6 +78,15 @@
     [self updateLanguages];
 }
 
+#pragma mark - private helper
+- (NSString *)tableTitleForCollection:(LNLocalizationCollection *)collection
+{
+    // This is dirty as hell, I might come up with better solution.
+    NSArray *pathComp = [collection.filePath pathComponents];
+    
+    NSString *parentFolder = [pathComp objectAtIndex:pathComp.count - 4];
+    return [NSString stringWithFormat:@"%@ (%@)", collection.fileName, parentFolder];
+}
 
 #pragma mark - Updating the Views
 
@@ -89,7 +96,7 @@
     
     NSMutableSet *tableFileNames = [NSMutableSet set];
     for (LNLocalizationCollection *collection in self.collections) {
-        [tableFileNames addObject:collection.fileName];
+        [tableFileNames addObject:[self tableTitleForCollection:collection]];
     }
     
     [self.tableButton addItemsWithTitles:[tableFileNames allObjects]];
@@ -103,7 +110,8 @@
     
     NSMutableSet *languageDesignations = [NSMutableSet set];
     for (LNLocalizationCollection *collection in self.collections) {
-        if ([titleOfSelectedItem isEqualToString:collection.fileName]) {
+        
+        if ([titleOfSelectedItem isEqualToString:[self tableTitleForCollection:collection]]) {
             [languageDesignations addObject:collection.languageDesignation];
         }
     }

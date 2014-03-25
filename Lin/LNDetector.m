@@ -12,6 +12,7 @@
 #import "LNEntity.h"
 #import "LNRegularExpressionPattern.h"
 #import "LNRegularExpressionPattern+type.h"
+#import "LNUserDefaultsManager.h"
 
 @interface LNDetector ()
 
@@ -31,13 +32,19 @@
     self = [super init];
     
     if (self) {
-        self.regularExpressionPatterns = @[
-                                           [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedString],
-                                           [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedStringForKey],
-                                           [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedStringFromTable],
-                                           [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedStringFromTableInBundle],
-                                           [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedStringWithDefaultValue]
-                                           ];
+        NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:@[
+                                                                      [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedString],
+                                                                      [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedStringForKey],
+                                                                      [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedStringFromTable],
+                                                                      [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedStringFromTableInBundle],
+                                                                      [LNRegularExpressionPattern patternWithType:LNEntityTypeLocalizedStringWithDefaultValue]
+                                                                      ]];
+        
+        NSArray *customPatterns = [LNUserDefaultsManager sharedManager].userDefinedSearchPatterns;
+        if (customPatterns.count) {
+            [arr addObjectsFromArray:customPatterns];
+        }
+        self.regularExpressionPatterns = [arr copy];
     }
     
     return self;

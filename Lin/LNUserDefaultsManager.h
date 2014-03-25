@@ -11,6 +11,7 @@
 @interface LNUserDefaultsManager : NSObject
 
 @property (nonatomic, assign, getter = isEnabled) BOOL enabled;
+@property (nonatomic, strong) NSArray *userDefinedSearchPatterns;
 
 + (instancetype)sharedManager;
 

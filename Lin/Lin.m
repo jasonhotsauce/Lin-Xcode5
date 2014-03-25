@@ -130,6 +130,7 @@ static Lin *_sharedPlugin = nil;
                                                  selector:@selector(menuDidChange:)
                                                      name:NSMenuDidChangeItemNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDetector) name:LNPopoverContentViewDidAddCustomPatternNotification object:nil];
         
         // Show the version information
         NSBundle *bundle = [NSBundle bundleForClass:[self class]];
@@ -363,6 +364,11 @@ static Lin *_sharedPlugin = nil;
     [self createMenuItem];
 }
 
+- (void)reloadDetector
+{
+    self.detector = nil;
+    self.detector = [LNDetector detector];
+}
 
 #pragma mark - Detachig Popover
 

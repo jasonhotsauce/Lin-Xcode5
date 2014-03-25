@@ -9,7 +9,7 @@
 #import "LNUserDefaultsManager.h"
 
 static NSString * const LNUserDefaultManagerEnabledKey = @"jp.questbeat.Lin.enabled";
-
+static NSString * const LNUserDefinedSearchPatternKey = @"cn.jasonhotsauce.Lin.searchPattern";
 @implementation LNUserDefaultsManager
 
 + (instancetype)sharedManager
@@ -52,6 +52,21 @@ static NSString * const LNUserDefaultManagerEnabledKey = @"jp.questbeat.Lin.enab
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return [userDefaults boolForKey:LNUserDefaultManagerEnabledKey];
+}
+
+- (NSArray *)userDefinedSearchPatterns
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *storedData = [userDefaults objectForKey:LNUserDefinedSearchPatternKey];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:storedData];
+}
+
+- (void)setUserDefinedSearchPatterns:(NSArray *)userDefinedSearchPatterns
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:userDefinedSearchPatterns];
+    [userDefaults setObject:encodedObject forKey:LNUserDefinedSearchPatternKey];
+    [userDefaults synchronize];
 }
 
 @end

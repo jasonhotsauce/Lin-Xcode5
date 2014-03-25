@@ -16,7 +16,7 @@
 @property (nonatomic, copy, readwrite) NSString *filePath;
 @property (nonatomic, copy, readwrite) NSString *languageDesignation;
 
-@property (nonatomic, strong, readwrite) NSMutableSet *localizations;
+@property (nonatomic, strong, readwrite) NSSet *localizations;
 
 @end
 
@@ -91,7 +91,7 @@
     NSString *contents = [self loadContentsOfFile:self.filePath];
     
     if (contents) {
-        NSMutableSet *localizations = [NSMutableSet set];
+        NSMutableSet *mutableCollections = [NSMutableSet set];
         
         // Parse
         __block NSInteger lineOffset = 0;
@@ -140,7 +140,7 @@
                                                                         valueRange:valueRange
                                                                         collection:self];
                 
-                [localizations addObject:localization];
+                [mutableCollections addObject:localization];
             }
             
             // Move offset
@@ -148,7 +148,7 @@
             lineOffset += lineRange.length;
         }];
         
-        self.localizations = localizations;
+        self.localizations = [mutableCollections copy];
     } else {
         self.localizations = nil;
     }
@@ -219,5 +219,4 @@
     // Reload
     [self reloadLocalizations];
 }
-
 @end

@@ -8,6 +8,11 @@
 
 #import "LNRegularExpressionPattern.h"
 
+static NSString *const LNRegularExpressionPatternPatternKey = @"pattern";
+static NSString *const LNRegularExpressionPatternRangeKey = @"range";
+static NSString *const LNRegularExpressionPatternEntityRangeIndexKey = @"entityRangeIndex";
+static NSString *const LNRegularExpressionPatternKeyRangeIndexKey = @"keyRangeIndex";
+
 @interface LNRegularExpressionPattern ()
 
 @property (nonatomic, copy, readwrite) NSString *pattern;
@@ -39,6 +44,25 @@
     }
     
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        self.pattern = [aDecoder decodeObjectForKey:LNRegularExpressionPatternPatternKey];
+        self.numberOfRanges = [[aDecoder decodeObjectForKey:LNRegularExpressionPatternRangeKey] integerValue];
+        self.entityRangeIndex = [[aDecoder decodeObjectForKey:LNRegularExpressionPatternEntityRangeIndexKey] integerValue];
+        self.keyRangeIndex = [[aDecoder decodeObjectForKey:LNRegularExpressionPatternKeyRangeIndexKey] integerValue];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.pattern forKey:LNRegularExpressionPatternPatternKey];
+    [aCoder encodeObject:@(self.numberOfRanges) forKey:LNRegularExpressionPatternRangeKey];
+    [aCoder encodeObject:@(self.entityRangeIndex) forKey:LNRegularExpressionPatternEntityRangeIndexKey];
+    [aCoder encodeObject:@(self.keyRangeIndex) forKey:LNRegularExpressionPatternKeyRangeIndexKey];
 }
 
 @end

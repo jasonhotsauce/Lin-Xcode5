@@ -15,7 +15,7 @@
 @property (nonatomic, copy, readonly) NSString *filePath;
 @property (nonatomic, copy, readonly) NSString *languageDesignation;
 
-@property (nonatomic, strong, readonly) NSMutableSet *localizations;
+@property (nonatomic, strong, readonly) NSSet *localizations;
 
 + (instancetype)localizationCollectionWithContentsOfFile:(NSString *)filePath;
 

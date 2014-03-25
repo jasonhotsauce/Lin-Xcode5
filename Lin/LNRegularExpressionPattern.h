@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LNRegularExpressionPattern : NSObject
+@interface LNRegularExpressionPattern : NSObject <NSCoding>
 
 @property (nonatomic, copy, readonly) NSString *pattern;
 @property (nonatomic, assign, readonly) NSUInteger numberOfRanges;

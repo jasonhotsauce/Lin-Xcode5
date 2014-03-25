@@ -13,6 +13,7 @@ extern NSString * const LNPopoverContentViewLocalizationKey;
 extern NSString * const LNPopoverContentViewLocalizationDidSelectNotification;
 extern NSString * const LNPopoverContentViewAlertDidDismissNotification;
 extern NSString * const LNPopoverContentViewDetachButtonDidClickNotification;
+extern NSString * const LNPopoverContentViewDidAddCustomPatternNotification;
 
 @interface LNPopoverContentView : NSView <NSTableViewDataSource, NSTableViewDelegate>
 

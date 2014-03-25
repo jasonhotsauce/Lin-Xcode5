@@ -27,7 +27,7 @@ static NSString * const LNRegularExpressionPatternTypePropertyKey = @"type";
 {
     LNRegularExpressionPattern *regularExpression = nil;
     
-    NSString *pettern = nil;
+    NSString *pattern = nil;
     NSUInteger numberOfRanges = 0;
     NSUInteger entityRangeIndex = 0;
     NSUInteger keyRangeIndex = 1;
@@ -35,38 +35,46 @@ static NSString * const LNRegularExpressionPatternTypePropertyKey = @"type";
     switch (type) {
         case LNEntityTypeLocalizedString:
         {
-            pettern = @"NSLocalizedString\\s*\\(\\s*@\"(.*?)\"\\s*,\\s*(.*?)\\s*\\)";
+            pattern = @"NSLocalizedString\\s*\\(\\s*@\"(.*?)\"\\s*,\\s*(.*?)\\s*\\)";
             numberOfRanges = 3;
         }
             break;
         case LNEntityTypeLocalizedStringForKey:
         {
-            pettern = @"localizedStringForKey:\\s*@\"(.*?)\"\\s*value:\\s*(.*?)\\s*table:\\s*(.*?)";
+            pattern = @"localizedStringForKey:\\s*@\"(.*?)\"\\s*value:\\s*(.*?)\\s*table:\\s*(.*?)";
             numberOfRanges = 4;
         }
             break;
         case LNEntityTypeLocalizedStringFromTable:
         {
-            pettern = @"NSLocalizedStringFromTable\\s*\\(\\s*@\"(.*?)\"\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*\\)";
+            pattern = @"NSLocalizedStringFromTable\\s*\\(\\s*@\"(.*?)\"\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*\\)";
             numberOfRanges = 4;
         }
             break;
         case LNEntityTypeLocalizedStringFromTableInBundle:
         {
-            pettern = @"NSLocalizedStringFromTableInBundle\\s*\\(\\s*@\"(.*?)\"\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*\\)";
+            pattern = @"NSLocalizedStringFromTableInBundle\\s*\\(\\s*@\"(.*?)\"\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*\\)";
             numberOfRanges = 5;
         }
             break;
         case LNEntityTypeLocalizedStringWithDefaultValue:
         {
-            pettern = @"NSLocalizedStringWithDefaultValue\\s*\\(\\s*@\"(.*?)\"\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*\\)";
+            pattern = @"NSLocalizedStringWithDefaultValue\\s*\\(\\s*@\"(.*?)\"\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*\\)";
+            numberOfRanges = 6;
+        }
+            break;
+        
+        case LNEntityTypeLocalizedStringUserDefined:
+        {
+            
+            pattern = @"NSLocalizedStringWithDefaultValue\\s*\\(\\s*@\"(.*?)\"\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*,\\s*(.*?)\\s*\\)";
             numberOfRanges = 6;
         }
             break;
     }
     
-    if (pettern) {
-        regularExpression = [LNRegularExpressionPattern patternWithString:pettern
+    if (pattern) {
+        regularExpression = [LNRegularExpressionPattern patternWithString:pattern
                                                            numberOfRanges:numberOfRanges
                                                          entityRangeIndex:entityRangeIndex
                                                             keyRangeIndex:keyRangeIndex];

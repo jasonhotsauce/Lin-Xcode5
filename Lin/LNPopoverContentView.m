@@ -18,12 +18,16 @@
 // Views
 #import "LNTableHeaderCell.h"
 #import "LNAlertAccessoryView.h"
+#import "LNAddCustomPatternView.h"
+#import "LNUserDefaultsManager.h"
+#import "LNRegularExpressionPattern.h"
 
 NSString * const LNPopoverContentViewLocalizationKey = @"LNPopoverContentViewLocalizationKey";
 
 NSString * const LNPopoverContentViewLocalizationDidSelectNotification = @"LNPopoverContentViewRowDidDoubleClickNotification";
 NSString * const LNPopoverContentViewAlertDidDismissNotification = @"LNPopoverContentViewAlertDidDismissNotification";
 NSString * const LNPopoverContentViewDetachButtonDidClickNotification = @"LNPopoverContentViewDetachButtonDidClickNotification";
+NSString * const LNPopoverContentViewDidAddCustomPatternNotification = @"LNPopoverContentViewDidAddCustomPatternNotification";
 
 @interface LNPopoverContentView ()
 
@@ -234,6 +238,50 @@ NSString * const LNPopoverContentViewDetachButtonDidClickNotification = @"LNPopo
                               withAnimation:NSTableViewAnimationEffectFade];
         
         [self.tableView endUpdates];
+    }
+}
+
+- (IBAction)showCustomSearchPatternPopover:(id)sender {
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSViewController *viewController = [[NSViewController alloc] initWithNibName:@"LNAddCustomPatternView" bundle:bundle];
+    LNAddCustomPatternView *patternView = (LNAddCustomPatternView *)viewController.view;
+    
+    NSAlert *alert = [NSAlert alertWithMessageText:@"Lin"
+                                     defaultButton:@"OK"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@"Add your own search pattern"];
+    alert.accessoryView = patternView;
+    
+    // Set icon
+    NSString *filePath = [bundle pathForResource:@"icon120" ofType:@"tiff"];
+    NSImage *icon = [[NSImage alloc] initWithContentsOfFile:filePath];
+    [alert setIcon:icon];
+    
+    // Show alert
+    switch ([alert runModal]) {
+        case NSAlertDefaultReturn:
+        {
+            NSArray *savedPattern = [[LNUserDefaultsManager sharedManager] userDefinedSearchPatterns];
+            NSMutableArray *arr;
+            if (savedPattern) {
+                arr = [savedPattern mutableCopy];
+            } else {
+                arr = [[NSMutableArray alloc] init];
+            }
+            LNRegularExpressionPattern *newPatter = [[LNRegularExpressionPattern alloc] initWithString:patternView.searchPattern numberOfRanges:patternView.range entityRangeIndex:0 keyRangeIndex:1];
+            [arr addObject:newPatter];
+            [[LNUserDefaultsManager sharedManager] setUserDefinedSearchPatterns:[arr copy]];
+        }
+            
+        default:
+        {
+            // Post notification
+            [[NSNotificationCenter defaultCenter] postNotificationName:LNPopoverContentViewAlertDidDismissNotification
+                                                                object:self
+                                                              userInfo:nil];
+        }
+            break;
     }
 }
 
